@@ -61,11 +61,14 @@ void PlayerCharacter::Update(float deltaTime, SDL_Event e)
 	m_position->x += (m_velocity->x * deltaTime);
 	m_collision_rect->position = m_position;
 
-	if (!m_grounded)
+	if (m_foot_tile.m_tileType == EMPTY)
 	{
 		m_velocity->y += GRAVITY * deltaTime;
+		m_grounded = false;
 	}
-	else
+
+
+	if (m_grounded)
 	{
 		Grounded();
 	}
@@ -183,10 +186,8 @@ void PlayerCharacter::HandleWallCollision(SDL_Event e)
 					}
 					break;                
 				case CollisionType::BOTTOM:
-					// move mario outside of collision
+					// move mario outside of collision and set m_grounded to true as he is standing
 					m_position->y = tile.m_collision_rect->position->y - m_collision_rect->height;
-					m_grounded = true;
-					LOG("anal beads");
 					break;
 				case CollisionType::NONE:
 					break;
@@ -198,7 +199,8 @@ void PlayerCharacter::HandleWallCollision(SDL_Event e)
 
 void PlayerCharacter::Grounded()
 {
-	// reset values
+	// reset values if mario landed after jumping
+	// also only executes this code once as m_jumping is set to false
 	if (m_jumping)
 	{
 		m_can_jump = true;
@@ -210,4 +212,3 @@ void PlayerCharacter::Grounded()
 	}
 }
 
-// Implement air resistance and terminal velocity. try to add a slide as well. make movement feel as good as possible.
