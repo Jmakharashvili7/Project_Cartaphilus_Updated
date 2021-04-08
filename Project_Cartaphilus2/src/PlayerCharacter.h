@@ -49,6 +49,7 @@ public:
 	inline bool IsJumping() { return m_jumping; }
 	inline void CancelJump() { m_velocity->y = 0; }
 	inline void CancelMovement() { m_velocity->x = 0.0f; }
+	inline void SetGrounded(bool result) { m_grounded = result; }
 
 	// normal functions
 	virtual void Render();
@@ -56,7 +57,7 @@ public:
 	void Grounded();
 	virtual void HandleJump(SDL_Event e);
 	virtual void HandleMovement(SDL_Event e, float deltaTime);
-	virtual void HandleWallCollision(SDL_Event e);
+	virtual void HandleWallCollision();
 };
 #endif // MAINCHARACTER_H
 

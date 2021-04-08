@@ -26,7 +26,6 @@ private:
 	float m_shake_time;
 	float m_wobble;
 	std::vector<CharacterKoopa*> m_koopas; 
-	std::vector<Tile> m_walls;
 	float m_background_yPos;
 public:
 	FirstLevel(SDL_Renderer* renderer);

@@ -61,12 +61,12 @@ void PlayerCharacter::Update(float deltaTime, SDL_Event e)
 	m_position->x += (m_velocity->x * deltaTime);
 	m_collision_rect->position = m_position;
 
+	// if mario is not standing on a tile apply gravity and set grounded to false
 	if (m_foot_tile.m_tileType == EMPTY)
 	{
 		m_velocity->y += GRAVITY * deltaTime;
 		m_grounded = false;
 	}
-
 
 	if (m_grounded)
 	{
@@ -81,7 +81,7 @@ void PlayerCharacter::Update(float deltaTime, SDL_Event e)
 
 	HandleMovement(e, deltaTime);
 	HandleJump(e);
-	HandleWallCollision(e);
+	HandleWallCollision();
 }
 
 void PlayerCharacter::HandleJump(SDL_Event e)
@@ -142,7 +142,7 @@ void PlayerCharacter::HandleMovement(SDL_Event e, float deltaTime)
 	}
 }
 
-void PlayerCharacter::HandleWallCollision(SDL_Event e)
+void PlayerCharacter::HandleWallCollision()
 {
 	// set the initial index to top left of the 9 tiles we check
 	int indexY = m_current_tile.m_array_pos->y - 1;
@@ -188,6 +188,7 @@ void PlayerCharacter::HandleWallCollision(SDL_Event e)
 				case CollisionType::BOTTOM:
 					// move mario outside of collision and set m_grounded to true as he is standing
 					m_position->y = tile.m_collision_rect->position->y - m_collision_rect->height;
+					m_grounded = true;
 					break;
 				case CollisionType::NONE:
 					break;

@@ -109,7 +109,7 @@ void FirstLevel::UpdatePOWBlock(SDL_Event e)
 	case CollisionType::BOTTOM:
 		if (m_pow_block->hit == false && player_character->IsJumping())
 		{
-			player_character->Grounded();
+			player_character->CancelJump();
 		}
 		break;
 	case CollisionType::RIGHT:
@@ -149,18 +149,6 @@ void FirstLevel::SetLevelMap()
 	
 	// add new koopa
 	m_koopas.push_back(new CharacterKoopa(m_renderer, "Images/Koopa.png", m_level_map, new Vector2D(90, 200), FACING_RIGHT, 50.0f, physicsManager));
-	
-	// fill the wall vector 
-	for (int y = 0; y < MAP_HEIGHT; y++)
-	{
-		for (int x = 0; x < MAP_WIDTH; x++)
-		{
-			if (m_level_map->GetTileAt(y, x).m_tileType == FLOOR)
-			{
-				m_walls.push_back(m_level_map->GetTileAt(y, x));
-			}
-		}
-	}
 }
 
 bool FirstLevel::SetupLevel()
