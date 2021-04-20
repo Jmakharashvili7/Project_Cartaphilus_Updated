@@ -2,6 +2,7 @@
 #include "Texture2D.h"
 #include "LevelMap.h"
 #include "PhysicsManager.h"
+#include "AudioManager.h"
 
 PlayerCharacter::PlayerCharacter(SDL_Renderer* renderer, std::string imagePath, Vector2D* start_position, LevelMap* map, Direction direction, PhysicsManager* physics_manager)
 {
@@ -15,6 +16,9 @@ PlayerCharacter::PlayerCharacter(SDL_Renderer* renderer, std::string imagePath, 
 	{
 		std::cerr << "Character texture could not be loaded!" << std::endl;
 	}
+
+	// Load The Jump SFX
+	m_jump_SFX = new Audio("Audio/MarioJump.mp3");
 
 	// Character information
 	m_position = start_position;
@@ -39,11 +43,11 @@ void PlayerCharacter::Render()
 {
 	if (m_facing_direction == FACING_RIGHT)
 	{
-		m_texture->Render(*m_position, SDL_FLIP_NONE);
+		m_texture->RenderV2(*m_position, SDL_FLIP_NONE);
 	}
 	else
 	{
-		m_texture->Render(*m_position, SDL_FLIP_HORIZONTAL);
+		m_texture->RenderV2(*m_position, SDL_FLIP_HORIZONTAL);
 	}
 }
 
@@ -93,6 +97,7 @@ void PlayerCharacter::HandleJump(SDL_Event e)
 		m_can_jump = false;
 		m_jumping = true;
 		m_grounded = false;
+		m_jump_SFX->PlayOnce();
 	}
 }		
 

@@ -1,6 +1,9 @@
 #include "Texture2D.h"
+
 #include <SDL_image.h>
 #include <iostream>
+
+#include "Text.h"
 
 Texture2D::Texture2D(SDL_Renderer* renderer)
 {
@@ -30,7 +33,7 @@ bool Texture2D::LoadFromFile(std::string path)
         m_texture = SDL_CreateTextureFromSurface(m_renderer, p_surface);
         if (m_texture == nullptr)
         {
-            std::cout << "Unable to create texture from surface. Error: " << SDL_GetError();
+            LOG("Unable to create texture from surface. Error: " << SDL_GetError());
         }
         else
         {
@@ -42,7 +45,7 @@ bool Texture2D::LoadFromFile(std::string path)
     }
     else
     {
-        std::cout << "Unable to create texture from surface. Error: " << IMG_GetError();
+        LOG("Unable to create texture from surface. Error: " + (std::string)IMG_GetError());
     }
 
     // return whether the process was successful
@@ -62,7 +65,7 @@ void Texture2D::Free()
 
 }
 
-void Texture2D::Render(const Vector2D& new_position, SDL_RendererFlip flip, double angle)
+void Texture2D::RenderV2(const Vector2D& new_position, SDL_RendererFlip flip, double angle)
 {
     // set where to render the texture
     SDL_Rect renderLocation = { new_position.x, new_position.y, m_width, m_height};
@@ -71,7 +74,7 @@ void Texture2D::Render(const Vector2D& new_position, SDL_RendererFlip flip, doub
     SDL_RenderCopyEx(m_renderer, m_texture, nullptr, &renderLocation, 0, nullptr, flip);
 }
 
-void Texture2D::Render(SDL_Rect src_rect, SDL_Rect src_dest, SDL_RendererFlip flip, double angle)
+void Texture2D::Render(SDL_Rect* src_rect, SDL_Rect src_dest, SDL_RendererFlip flip, double angle)
 {
-    SDL_RenderCopyEx(m_renderer, m_texture, &src_rect, &src_dest, angle, nullptr, flip);
+    SDL_RenderCopyEx(m_renderer, m_texture, src_rect, &src_dest, angle, nullptr, flip);
 }

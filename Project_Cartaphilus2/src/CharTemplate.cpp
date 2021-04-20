@@ -65,18 +65,18 @@ void CharTemplate::Render()
 {
 	if (m_facing_direction == FACING_RIGHT)
 	{
-		m_texture->Render(*m_position, SDL_FLIP_NONE);
+		m_texture->RenderV2(*m_position, SDL_FLIP_NONE);
 	}
 	else
 	{
-		m_texture->Render(*m_position, SDL_FLIP_HORIZONTAL);
+		m_texture->RenderV2(*m_position, SDL_FLIP_HORIZONTAL);
 	}
 }
 
 void CharTemplate::Update(float deltaTime)
 {
 	// set the current tile to the center of the character
-	m_current_tile = m_current_map->GetTileAt((int)(m_position->y + m_texture->GetHeight() * 0.5) / TILE_HEIGHT,
+	m_current_tile = m_current_map->GetTileAt((int)(m_position->y + m_texture->GetHeight()) / TILE_HEIGHT,
 		(int)(m_position->x + (m_texture->GetWidth() * 0.5)) / TILE_WIDTH);
 
 	// apply directional vectors to current position
@@ -126,3 +126,4 @@ void CharTemplate::CancelJump()
 {
 	m_velocity->y = 0;
 }
+

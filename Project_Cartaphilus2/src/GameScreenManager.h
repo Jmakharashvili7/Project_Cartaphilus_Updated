@@ -11,7 +11,8 @@ class GameScreenManager
 {
 private:
 	SDL_Renderer* m_renderer;
-	GameScreen* m_current_screen;
+	GameScreen* m_current_level;
+	SCREENS m_current_screen;
 public: 
 	GameScreenManager(SDL_Renderer* renderer, SCREENS startScreen);	
 	~GameScreenManager();

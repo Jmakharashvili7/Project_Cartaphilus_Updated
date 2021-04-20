@@ -6,12 +6,6 @@
 #include <iostream>
 #include "Constants.h"
 
-#ifdef PR_DEBUG
-#define LOG(x) std::cout << x << std::endl
-#else 
-#define LOG(x) 
-#endif
-
 struct Vector2D
 {
 	float x;
@@ -48,7 +42,6 @@ struct Rect2D
 	}
 	~Rect2D()
 	{
-		delete position;
 	}
 };
 
@@ -77,7 +70,7 @@ enum class CollisionType
 	NONE
 };
 
-enum SCREENS
+enum class SCREENS
 {
 	SCREEN_INTRO,
 	SCREEN_MENU,

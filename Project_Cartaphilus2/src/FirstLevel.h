@@ -7,12 +7,14 @@
 #include "Commons.h"
 #include "PlayerCharacter.h"
 #include "CharacterKoopa.h"
+#include "Text.h"
 
 class Texture2D;	
 class PlayerCharacter;
 class PhysicsManager;
 class LevelMap;
 class PowBlock;
+class Audio;
 
 class FirstLevel : GameScreen
 {
@@ -27,6 +29,8 @@ private:
 	float m_wobble;
 	std::vector<CharacterKoopa*> m_koopas; 
 	float m_background_yPos;
+	Audio* m_music;
+	TextManager* m_text_score;
 public:
 	FirstLevel(SDL_Renderer* renderer);
 	~FirstLevel();

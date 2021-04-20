@@ -6,11 +6,15 @@
 #include "Commons.h"
 
 class Texture2D;
+class TextManager;
 
 class MainMenu : GameScreen
 {
 private:
 	Texture2D* m_background_texture;
+	TextManager* m_play_button;
+	TextManager* m_highscore_button;
+	TextManager* m_quit_button;
 public:
 	MainMenu(SDL_Renderer* renderer);
 	~MainMenu();

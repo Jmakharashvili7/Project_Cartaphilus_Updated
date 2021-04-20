@@ -1,11 +1,15 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
+
 #include <iostream>
+
 #include "Texture2D.h"
 #include "Commons.h"
 #include "Constants.h"
 #include "GameScreenManager.h"
+#include "Text.h"
 
 using namespace std;
 
@@ -14,7 +18,6 @@ SDL_Window* g_window = nullptr;
 SDL_Renderer* g_renderer = nullptr;
 GameScreenManager* game_screen_manager;
 Uint32 g_old_time;
-Mix_Music* g_music;
 
 // function prototypes
 bool InitSDL();
@@ -22,7 +25,6 @@ void CloseSDL();
 bool Update();
 void Render();
 SDL_Texture* LoadTextureFromFile(string path);
-void LoadMusic(std::string path);
 
 int main(int argc, char* argv[])
 {
@@ -45,43 +47,47 @@ int main(int argc, char* argv[])
 
 bool InitSDL()
 {
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+    // check if TTF was initialized correctly
+    if (TTF_Init() == -1)
     {
-        cout << "Mixer could not init. Error: " << Mix_GetError();
+        LOG("TTF could not be initialzied!" + (std::string)TTF_GetError());
         return false;
     }
 
-    LoadMusic("Audio/Mario.mp3");
-    if (Mix_PlayingMusic() == 0)
+    // setup the audio mixer and check if it was setup correctly
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
     {
-        Mix_PlayMusic(g_music, -1);
+        // temp variable to hold the error string
+        LOG("Mixer could not init. Error: " + (std::string)Mix_GetError());
+        return false;
     }
 
     // Check if initialization was successful
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
-        cout << "SDL did not initialize. Error: " << SDL_GetError();
+        LOG("SDL did not initialize. Error: " + (std::string)SDL_GetError());
         return false;
     }
+
     // initialization was succesful
     else
     {
         // Create the window
         g_window = SDL_CreateWindow("Project Cartaphilus",
-                SDL_WINDOWPOS_UNDEFINED,
-                SDL_WINDOWPOS_UNDEFINED,
-                SCREEN_WIDTH,
-                SCREEN_HEIHGT,
-                SDL_WINDOW_SHOWN);
+            SDL_WINDOWPOS_UNDEFINED,
+            SDL_WINDOWPOS_UNDEFINED,
+            SCREEN_WIDTH,
+            SCREEN_HEIGHT,
+            SDL_WINDOW_SHOWN);
         // check if the window was created
         if (g_window == nullptr)
         {
             // window failed
-            cout << "Window was not created. Error " << SDL_GetError();
+            LOG("Window was not created. Error " + (std::string)SDL_GetError());
             return false;
         }
     }
-        
+
     // Initialize renderer
     g_renderer = SDL_CreateRenderer(g_window, -1, SDL_RENDERER_ACCELERATED);
 
@@ -89,7 +95,7 @@ bool InitSDL()
     if (g_renderer != nullptr)
     {
         // setup screen manager
-        game_screen_manager = new GameScreenManager(g_renderer, SCREEN_LEVEL1);
+        game_screen_manager = new GameScreenManager(g_renderer, SCREENS::SCREEN_LEVEL1);
 
         // set the time
         g_old_time = SDL_GetTicks();
@@ -100,14 +106,14 @@ bool InitSDL()
         // Check if loading was successful
         if (!(IMG_Init(imageFlags) & imageFlags))
         {
-            cout << "SDL_Image could not be initialized. Error: " << IMG_GetError();
+            LOG("SDL_Image could not be initialized. Error: " + (std::string)IMG_GetError());
             return false;
         }
     }
     // renderer was not initialized correctly
     else
     {
-        cout << "Renderer could not initialize. Error: " << SDL_GetError();
+        LOG("Renderer could not initialize. Error: " + (std::string)SDL_GetError());
         return false;
     }
     return true;
@@ -126,6 +132,7 @@ void CloseSDL()
     // quit SDL subsystems
     IMG_Quit();
     SDL_Quit();
+    TTF_Quit();
 
     // release the renderer
     SDL_DestroyRenderer(g_renderer);
@@ -153,7 +160,7 @@ bool Update()
         switch (e.key.keysym.sym)
         {
         case SDLK_q:
-            game_screen_manager->ChangeScreen(SCREEN_MENU);
+            game_screen_manager->ChangeScreen(SCREENS::SCREEN_MENU);
             break;  
         }
     }
@@ -175,13 +182,5 @@ void Render()
 
     // update the screen
     SDL_RenderPresent(g_renderer);
-}
+}   
 
-void LoadMusic(std::string path)
-{
-    g_music = Mix_LoadMUS(path.c_str());
-    if (g_music == nullptr)
-    {
-        std::cout << "Failed to load the music. Error: " << Mix_GetError() << std::endl;
-    }
-}

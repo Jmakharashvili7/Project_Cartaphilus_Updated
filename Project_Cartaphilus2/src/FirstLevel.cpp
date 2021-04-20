@@ -1,19 +1,25 @@
 #include <iostream>
 #include <fstream>
+
 #include "FirstLevel.h"
 #include "Texture2D.h"
 #include "PhysicsManager.h"
 #include "LevelMap.h"
 #include "POW_Block.h"
-
-using namespace std;
+#include "AudioManager.h"
+#include "Text.h"
 
 FirstLevel::FirstLevel(SDL_Renderer* renderer) : GameScreen(renderer)
 {
 	SetLevelMap();
 	SetupLevel();
+	LoadHighscoreTable();
+
 	m_renderer = renderer;
 	physicsManager = PhysicsManager::Instance();
+	m_music = new Audio("Audio/Mario.mp3");
+	m_score = 15;
+	m_text_score = new TextManager(m_renderer, "fonts/OpenSans-SemiBold.ttf", 20, "score: " + std::to_string(m_score), { 255, 96, 0, 255 });
 }
 
 FirstLevel::~FirstLevel()
@@ -32,12 +38,20 @@ FirstLevel::~FirstLevel()
 
 	// clean up koopas
 	m_koopas.clear();
+
+	// check if highscore should be updated
+	if (m_score >= m_highscores[0])
+		UpdateHighscore(m_score);
+
+	delete m_music;
+
+	LOG("test2");
 }
 
 void FirstLevel::Render()
 {
 	// Draw the background
-	m_background_texture->Render(Vector2D(0, m_background_yPos), SDL_FLIP_NONE);
+	m_background_texture->RenderV2(Vector2D(0, m_background_yPos), SDL_FLIP_NONE);
 
 	// render character
 	player_character->Render();
@@ -49,12 +63,16 @@ void FirstLevel::Render()
 	{
 		m_koopas[i]->Render();
 	}
+
+	m_text_score->RenderText(1, 1);
 }
 
 void FirstLevel::Update(float deltaTime, SDL_Event e)
 {
 	// Update character
 	player_character->Update(deltaTime, e);
+
+	m_music->LoopMusic();
 
 	if (m_pow_block->IsAvailable())
 		UpdatePOWBlock(e);
@@ -75,23 +93,6 @@ void FirstLevel::Update(float deltaTime, SDL_Event e)
 	}
 
 	UpdateKoopas(deltaTime);
-
-	/*
-	switch (physicsManager->BoxCollision(player_character->GetCollisionRect(), m_koopas[0]->GetCollisionRect()))
-	{
-	case CollisionType::TOP:
-		player_character->CancelJump();
-		std::cout << "sex" << std::endl;
-		break;
-	case CollisionType::BOTTOM:
-		std::cout << "sex" << std::endl;
-		break;
-	case CollisionType::RIGHT:
-		break;
-	case CollisionType::LEFT:
-		break;
-	}
-	*/
 }
 
 void FirstLevel::UpdatePOWBlock(SDL_Event e)
@@ -159,7 +160,7 @@ bool FirstLevel::SetupLevel()
 	m_background_texture = new Texture2D(m_renderer);
 	if (!m_background_texture->LoadFromFile("Images/BackgroundMB.png"))
 	{
-		cout << "Failed to load the background texture!" << endl;
+		LOG("Failed to load the background texture!");
 		return false;
 	}
 	return true;

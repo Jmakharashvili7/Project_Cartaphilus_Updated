@@ -3,6 +3,7 @@
 #define MAINCHARACTER_H
 
 #include <iostream>
+#include <SDL_mixer.h>
 #include "SDL.h"
 #include "commons.h"
 #include "Constants.h"
@@ -10,6 +11,7 @@
 class PhysicsManager;
 class Texture2D;
 class LevelMap;
+class Audio;
 
 class PlayerCharacter
 {
@@ -35,6 +37,7 @@ protected:
 	bool m_grounded;
 private:
 	Direction m_facing_direction;
+	Audio* m_jump_SFX;
 public:
 	PlayerCharacter(SDL_Renderer* renderer, std::string imagePath, Vector2D* start_position, LevelMap* map, Direction direction, 
 		PhysicsManager* physics_manager);

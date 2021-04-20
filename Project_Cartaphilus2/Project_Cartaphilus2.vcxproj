@@ -89,13 +89,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;PR_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)\src;$(PROJECTDIR)SDL2\SDL\image_include;$(PROJECTDIR)SDL2\SDL\mixer_include;$(PROJECTDIR)SDL2\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\sdl_ttf\include;$(ProjectDir)\src;$(PROJECTDIR)SDL2\SDL\image_include;$(PROJECTDIR)SDL2\SDL\mixer_include;$(PROJECTDIR)SDL2\SDL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(PROJECTDIR)SDL2\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SOLUTIONDIR)Dependencies\sdl_ttf\lib\x86;$(PROJECTDIR)SDL2\SDL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2_ttf.lib;SDL2.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\AudioManager.cpp" />
     <ClCompile Include="src\CharacterKoopa.cpp" />
     <ClCompile Include="src\CharTemplate.cpp" />
     <ClCompile Include="src\FirstLevel.cpp" />
@@ -164,8 +165,10 @@
     <ClCompile Include="src\PlayerCharacter.cpp" />
     <ClCompile Include="src\POW_Block.cpp" />
     <ClCompile Include="src\Texture2D.cpp" />
+    <ClCompile Include="src\Text.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AudioManager.h" />
     <ClInclude Include="src\CharacterKoopa.h" />
     <ClInclude Include="src\CharTemplate.h" />
     <ClInclude Include="src\Commons.h" />
@@ -179,6 +182,7 @@
     <ClInclude Include="src\PlayerCharacter.h" />
     <ClInclude Include="src\POW_Block.h" />
     <ClInclude Include="src\Texture2D.h" />
+    <ClInclude Include="src\Text.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -12,10 +12,11 @@ public:
 	Texture2D(SDL_Renderer* renderer);
 	~Texture2D();
 
+	void ConvertSurface(SDL_Surface* surface);
 	bool LoadFromFile(std::string path);
+	void RenderV2(const Vector2D& new_position, SDL_RendererFlip flip, double angle = 0.0);
+	void Render(SDL_Rect* src_rect, SDL_Rect src_dest, SDL_RendererFlip flip, double angle = 0.0);
 	void Free();
-	void Render(const Vector2D& new_position, SDL_RendererFlip flip, double angle = 0.0);
-	void Render(SDL_Rect src_rect, SDL_Rect src_dest, SDL_RendererFlip flip, double angle = 0.0);
 
 	int GetWidth() { return m_width; }
 	int GetHeight() { return m_height; }

@@ -45,7 +45,7 @@ void PowBlock::Render()
 									m_single_spire_w, m_single_sprite_h };
 
 		// Draw the sprite
-		m_texture->Render(potion_of_sprite, dest_rect, SDL_FLIP_NONE);
+		m_texture->Render(&potion_of_sprite, dest_rect, SDL_FLIP_NONE);
 	}
 }
 

@@ -1,6 +1,7 @@
 #include "CharacterKoopa.h"
 #include "Texture2D.h"
 #include "PhysicsManager.h"
+#include "Text.h"
 
 CharacterKoopa::CharacterKoopa(SDL_Renderer* renderer, std::string imagePath, LevelMap* map, Vector2D* start_position, Direction start_facing, float movement_speed, PhysicsManager* physics_manager) : CharTemplate(renderer, imagePath, start_position, map, start_facing, physics_manager)
 {
@@ -15,7 +16,7 @@ CharacterKoopa::CharacterKoopa(SDL_Renderer* renderer, std::string imagePath, Le
 	m_collisionCirlce = new Circle2D(15.0f, m_position);
 	m_collision_rect = new Rect2D(m_position, m_single_sprite_w, m_single_sprite_h);
 
-	std::cout << "New koopa!" << std::endl;
+	LOG("new koopa");
 }
 
 CharacterKoopa::~CharacterKoopa()
@@ -48,11 +49,11 @@ void CharacterKoopa::Render()
 	// then draw it facing the correct direction
 	if (m_facing_direction == FACING_RIGHT)
 	{
-		m_texture->Render(portion_of_the_sprite, destRect, SDL_FLIP_NONE);
+		m_texture->Render(&portion_of_the_sprite, destRect, SDL_FLIP_NONE);
 	}
 	else
 	{
-		m_texture->Render(portion_of_the_sprite, destRect, SDL_FLIP_HORIZONTAL);
+		m_texture->Render(&portion_of_the_sprite, destRect, SDL_FLIP_HORIZONTAL);
 	}
 }
 

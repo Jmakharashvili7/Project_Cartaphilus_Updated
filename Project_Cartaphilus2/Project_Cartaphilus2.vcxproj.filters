@@ -49,6 +49,10 @@
     <ClCompile Include="src\POW_Block.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="src\AudioManager.cpp">
+      <Filter>GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CharacterKoopa.h">
@@ -90,5 +94,9 @@
     <ClInclude Include="src\POW_Block.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="src\AudioManager.h">
+      <Filter>GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Text.h" />
   </ItemGroup>
 </Project>
