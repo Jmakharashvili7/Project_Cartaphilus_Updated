@@ -25,6 +25,11 @@ void GameScreen::Render() {}
 
 void GameScreen::Update(float deltaTime, SDL_Event e) {}
 
+void GameScreen::DetectButtonClick(SDL_Event e)
+{
+
+}
+
 bool GameScreen::LoadHighscoreTable()
 {
 	std::ifstream inFile;

@@ -20,15 +20,6 @@ MainMenu::~MainMenu()
 {
 	delete m_background_texture;
 	m_background_texture = nullptr;
-
-	delete m_play_button;
-	m_play_button = nullptr;
-
-	delete m_highscore_button;
-	m_highscore_button = nullptr;
-
-	delete m_quit_button;
-	m_quit_button = nullptr;
 }
 
 void MainMenu::Render()

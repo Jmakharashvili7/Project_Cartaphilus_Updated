@@ -57,16 +57,20 @@ void PlayerCharacter::Update(float deltaTime, SDL_Event e)
 	m_current_tile = m_current_map->GetTileAt((int)(m_position->y + m_texture->GetHeight() * 0.5) / TILE_HEIGHT,
 		(int)(m_position->x + (m_texture->GetWidth() * 0.5)) / TILE_WIDTH);
 
-	Tile m_foot_tile = m_current_map->GetTileAt((int)(m_position->y + m_texture->GetHeight()) / TILE_HEIGHT,
-		(int)(m_position->x + (m_texture->GetWidth() * 0.5)) / TILE_WIDTH);
+	Tile m_foot_tileL = m_current_map->GetTileAt((int)(m_position->y + m_texture->GetHeight()) / TILE_HEIGHT,
+		(int)(m_position->x) / TILE_WIDTH);
 	
+	Tile m_foot_tileR = m_current_map->GetTileAt((int)(m_position->y + m_texture->GetHeight()) / TILE_HEIGHT,
+		(int)(m_position->x + m_texture->GetWidth()) / TILE_WIDTH);
+
 	// apply directional vectors to current position
 	m_position->y += (m_velocity->y * deltaTime);
 	m_position->x += (m_velocity->x * deltaTime);
 	m_collision_rect->position = m_position;
 
-	// if mario is not standing on a tile apply gravity and set grounded to false
-	if (m_foot_tile.m_tileType == EMPTY)
+	/* check to make sure mario isnt standing on a tile. check both left foot and right foot. if neither are touching the 
+	   ground apply gravity and set grounded to false */
+	if (m_foot_tileL.m_tileType == EMPTY && m_foot_tileR.m_tileType == EMPTY)
 	{
 		m_velocity->y += GRAVITY * deltaTime;
 		m_grounded = false;
@@ -97,7 +101,7 @@ void PlayerCharacter::HandleJump(SDL_Event e)
 		m_can_jump = false;
 		m_jumping = true;
 		m_grounded = false;
-		m_jump_SFX->PlayOnce();
+		//m_jump_SFX->PlayOnce();
 	}
 }		
 
